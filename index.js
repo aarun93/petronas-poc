@@ -1,17 +1,23 @@
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const express = require("express");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
+const { Configuration, OpenAIApi } = require("openai");
+require('dotenv').config()
 
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 var app = express();
 ffmpeg.setFfmpegPath(ffmpegPath);
-
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 var port = 9000;
 
-app.post("/", function (req, res) {
+app.post("/", async function (req, res) {
   var proc = ffmpeg("sample-5s.mp4")
     .videoFilters({
       filter: "drawtext",
@@ -36,10 +42,50 @@ app.post("/", function (req, res) {
     })
     // save to file
     .save("./out.mp4");
-  res.send("what up boiiii");
-});
+  
+    try {
+      const completion = await openai.createImage({
+        prompt: "one horse",
+        n: 1,
+        size: "1024x1024",
+      })
+      console.log(completion.data[0].url);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.status);
+        console.log(error.response.data);
+      } else {
+        console.log(error.message);
+      }
+    }
+  
+  //res.send(response);
+   // res.send("test");
+})
 
-app.get("/test", (req, res) => {
+app.get("/test", async(req, res) => {
+
+  //DAL-EE AI IMAGE
+  var generatedImage;
+  try {
+    const completion = await openai.createImage({
+      prompt: "petronas power",
+      n: 1,
+      size: "1024x1024",
+    })
+    console.log(completion.data.data[0].url);
+    generatedImage = completion.data.data[0].url
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.status);
+      console.log(error.response.data);
+    } else {
+      console.log(error.message);
+    }
+  }
+  //DAL-EE AI IMAGE
+
+
   const inputVideo = "sample-5s.mp4";
   const inputImage = "5847e7a1cef1014c0b5e480f.png";
   // const inputImage = "https://cdn.fstoppers.com/styles/full/s3/media/2019/12/04/nando-jpeg-quality-screenshot_dsc-hv400v.jpg";
@@ -49,7 +95,7 @@ app.get("/test", (req, res) => {
   const fs = require("fs");
 
   command.input(inputVideo);
-  command.input(inputImage);
+  command.input(generatedImage);
 
   command.complexFilter(
     [
