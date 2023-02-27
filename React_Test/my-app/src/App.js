@@ -1,6 +1,7 @@
 import './css/bootstrap.min.css';  
 import './css/style.css';
 //Images
+import {useEffect} from 'react'
 import desktop_pattern from "./images/desktop_pattern.png";
 import dynamic_logo from "./images/dynamic_logo.png";
 import arrow_down from "./images/arrow_down.png";
@@ -8,6 +9,11 @@ import arrow_down from "./images/arrow_down.png";
 import {art} from "./js/main.js";
 
 function App() {
+
+  useEffect(() => {
+    art();
+  }, []);
+  
   return (
     <div className="App">
       <header className="App-header">
