@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     art();
   }, []);
-  
+
   return (
     <div className="App">
       <header className="App-header">
@@ -38,11 +38,11 @@ function App() {
           <div className="form-group form-row margin_top">
             <select id="interest_holder" className="form-control">
               <option value="">Interest</option>
-              <option value="art" id="art">Art</option>
-              <option value="music" id="music">Music</option>
-              <option value="travel" id="travel">Travel</option>
-              <option value="cooking" id="cooking">Cooking</option>
-              <option value="sport" id="sport">Sports</option>
+              <option value="art" id="art_select">Art</option>
+              <option value="music" id="music_select">Music</option>
+              <option value="travel" id="travel_select">Travel</option>
+              <option value="cooking" id="cooking_select">Cooking</option>
+              <option value="sport" id="sport_select">Sports</option>
             </select>
             <div className="arrow_down">
               <img src={arrow_down} alt="arrow_down"/>
