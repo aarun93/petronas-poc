@@ -5,9 +5,10 @@ const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
 const { Configuration, OpenAIApi } = require("openai");
 require('dotenv').config()
+const fs = require("fs");
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 var app = express();
@@ -49,7 +50,7 @@ app.post("/", async function (req, res) {
         n: 1,
         size: "1024x1024",
       })
-      console.log(completion.data[0].url);
+      console.log(completion.data.data[0].url);
     } catch (error) {
       if (error.response) {
         console.log(error.response.status);
@@ -65,24 +66,29 @@ app.post("/", async function (req, res) {
 
 app.get("/test", async(req, res) => {
 
+  console.log(req.query.enableOpenAi);
+
   //DAL-EE AI IMAGE
   var generatedImage;
-  try {
-    const completion = await openai.createImage({
-      prompt: "petronas power",
-      n: 1,
-      size: "1024x1024",
-    })
-    console.log(completion.data.data[0].url);
-    generatedImage = completion.data.data[0].url
-  } catch (error) {
-    if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
-    } else {
-      console.log(error.message);
+  if(req.query.enableOpenAi == "true"){
+    try {
+      const completion = await openai.createImage({
+        prompt: req.query.prompt,
+        n: 1,
+        size: "1024x1024",
+      })
+      console.log(completion.data.data[0].url);
+      generatedImage = completion.data.data[0].url
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.status);
+        console.log(error.response.data);
+      } else {
+        console.log(error.message);
+      }
     }
   }
+  
   //DAL-EE AI IMAGE
 
 
@@ -95,7 +101,9 @@ app.get("/test", async(req, res) => {
   const fs = require("fs");
 
   command.input(inputVideo);
-  command.input(generatedImage);
+  // command.input(inputImage);
+  command.input(generatedImage || inputImage);
+  command.input("out.mp4");
 
   command.complexFilter(
     [
@@ -103,27 +111,45 @@ app.get("/test", async(req, res) => {
         filter: "drawtext",
         options: {
           fontfile: "test.ttf",
-          text: "Hello",
+          text: req.query.displayText,
           fontcolor: "red",
           fontsize: "72",
-          enable: "gte(t,3)",
-          x: 100,
-          y: 100,
+          y:"h-100*t"
         },
         inputs: "0:v",
         outputs: "textoutput",
       },
+      
       {
         filter: "overlay",
         options: {
-          x: 215,
+          x: 400,
           y: 25,
         },
         inputs: ["textoutput", "1:v"],
         outputs: "filtered",
       },
+      // {
+      //   filter: "overlay",
+      //   options: {
+      //     x: 250,
+      //     y: 100,
+      //   },
+      //   inputs: ["filtered", "2:v"],
+      //   outputs: "merged",
+      // },
+      // {
+      //   filter: "concat",
+      //   options: {
+      //     n: 2, 
+      //     v: 1, 
+      //     a: 0,
+      //   },
+      //   inputs: ["filtered", "2:v"],
+      //   outputs: "concatenated",
+      // },
     ],
-    " filtered"
+    "filtered"
   );
 
   command
@@ -134,7 +160,118 @@ app.get("/test", async(req, res) => {
       console.log("An error occurred: " + err.message);
     })
     .on("end", function () {
-      console.log("file has been generated succesfully");
+      const outputFilePath = `${__dirname}/output-test.mp4`;
+      const output = fs.createReadStream(outputFilePath);
+      output.on("open", () => {
+        res.set("Content-Type", "video/mp4");
+        output.pipe(res);
+      });
+      output.on("error", (err) => {
+        console.error(err);
+        res.status(500).send("Error sending response");
+      });
+    })
+    .run();
+});
+
+app.get("/petronas", async(req, res) => {
+
+  let param = {
+    name:"Harshal Bagul",
+    moment:"Making Big Moves With Big Beats"
+  }
+
+  const intro = "./assets/clips/videos/introvideo.mp4";
+  const outro = "./assets/clips/videos/outrovideo.mp4";
+  const dynamicVideo = "./assets/clips/AI-footages/Music/dynamicvideo.mp4";
+  const powermomentout = "./output-test.mp4";
+
+  const command = ffmpeg();
+
+
+  command.input(intro);
+  command.input(dynamicVideo);
+  command.input(outro);
+  command.complexFilter(
+    [
+      {
+        filter: "drawtext",
+        options: {
+          fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
+          text: param.moment,
+          fontcolor: "white",
+          fontsize: "80",
+          alpha:'if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,2.5),1,if(lt(t,3),(0.5-(t-2.5))/0.5,0))))',
+          x:"(w-text_w)/2",
+          y:"(h-text_h)/2"
+        },
+        inputs: "0:v",
+        outputs: "powermoment1",
+      },
+      {
+        filter: "drawtext",
+        options: {
+          fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
+          text: `By ${param.name}`,
+          fontcolor: "white",
+          fontsize: "40",
+          alpha:'if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,2.5),1,if(lt(t,3),(0.5-(t-2.5))/0.5,0))))',
+          x:"(w-text_w)/2",
+          y:"(h-text_h)/1.7"
+        },
+        inputs: "powermoment1",
+        outputs: "intro",
+      },
+      {
+        filter: "drawtext",
+        options: {
+          fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
+          text: 'I',
+          fontcolor: "red",
+          fontsize: "80",
+          alpha:'if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,1.5),1,if(lt(t,2),(0.5-(t-1.5))/0.5,0))))',
+          x:"(w-text_w)/2",
+          y:"(h-text_h)/2.1"
+        },
+        inputs: "1:v",
+        outputs: "dynamic",
+      },
+      {
+        filter: "drawtext",
+        options: {
+          fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
+          text: param.name,
+          fontcolor: "white",
+          fontsize: "80",
+          alpha:'if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,1.5),1,if(lt(t,2),(0.5-(t-1.5))/0.5,0))))',
+          x:"(w-text_w)/2",
+          y:"(h-text_h)/2.1"
+        },
+        inputs: "2:v",
+        outputs: "outro",
+      },
+      {
+        filter: 'concat',
+        options: {
+          n: 3,
+          v: 1,
+          a: 0,
+        },
+        inputs: ['intro', 'dynamic' ,'outro'],
+        outputs: 'out'
+      }
+    ],
+    "out"
+  );
+
+  command
+    .output(powermomentout)
+    .videoCodec("libx264")
+    .audioCodec("copy")
+    .on("error", function (err) {
+      console.log("An error occurred: " + err.message);
+    })
+    .on("end", function () {
       const outputFilePath = `${__dirname}/output-test.mp4`;
       const output = fs.createReadStream(outputFilePath);
       output.on("open", () => {
