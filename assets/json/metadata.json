@@ -1,0 +1,108 @@
+[
+    {
+        "id":"music",
+        "name":"Music",
+        "moments":[
+            {
+                "id":"rock",
+                "name":"Rock",
+                "description":"Rocking with power"
+            },
+            {
+                "id":"k-pop",
+                "name":"K-Pop",
+                "description":"Moving with the rhythm"
+            },
+            {
+                "id":"hip-hop",
+                "name":"R&B / Hip-Hop",
+                "description":"Making big moves with big beats"
+
+            }
+        ]
+    },
+    {
+        "id":"art",
+        "name":"Art",
+        "moments":[
+            {
+                "id":"graffiti",
+                "name":"Graffiti",
+                "description":"Unleashing can-do creativity"
+            },
+            {
+                "id":"painting",
+                "name":"Painting",
+                "description":"Mastering the stroke of genius"
+            },
+            {
+                "id":"sculpture",
+                "name":"Sculpture",
+                "description":"Making imagination happen"
+            }
+        ]
+    },
+    {
+        "id":"travel",
+        "name":"Travel",
+        "moments":[
+            {
+                "id":"hot-air-balloon",
+                "name":"Hot Air Balloon",
+                "description":"Seeing the world from above"
+            },
+            {
+                "id":"rock-climbing",
+                "name":"Rock climbing",
+                "description":"Reaching for new heights"
+            },
+            {
+                "id":"camping",
+                "name":"Camping",
+                "description":"Taking in the night sky"
+            }
+        ]
+    },
+    {
+        "id":"cooking",
+        "name":"Cooking",
+        "moments":[
+            {
+                "id":"plating",
+                "name":"Plating",
+                "description":"Creating joy on a plate"
+            },
+            {
+                "id":"eating-foodie",
+                "name":"Eating/foodie",
+                "description":"Getting a taste of happiness"
+            },
+            {
+                "id":"cake-design",
+                "name":"Cake design",
+                "description":"Baking moments of sweetness"
+            }
+        ]
+    },
+    {
+        "id":"sports",
+        "name":"Sports",
+        "moments":[
+            {
+                "id":"golf",
+                "name":"Golf",
+                "description":"Taking that winning swing"
+            },
+            {
+                "id":"running",
+                "name":"Running",
+                "description":"Getting a running start to a great day"
+            },
+            {
+                "id":"cycling",
+                "name":"Cycling",
+                "description":"Blazing trails on two wheels"
+            }
+        ]
+    }
+]

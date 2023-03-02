@@ -4,6 +4,7 @@ const express = require("express");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
 const { Configuration, OpenAIApi } = require("openai");
+const metadata = require('./assets/json/metadata.json');
 require('dotenv').config()
 const fs = require("fs");
 
@@ -269,7 +270,10 @@ app.get("/petronas", async(req, res) => {
     .videoCodec("libx264")
     .audioCodec("copy")
     .on("error", function (err) {
-      console.log("An error occurred: " + err.message);
+      console.log("An error occurred: " + err);
+    })
+    .on("progress", function (info) {
+      console.log("My info - : " + JSON.stringify(info));
     })
     .on("end", function () {
       const outputFilePath = `${__dirname}/output-test.mp4`;
@@ -285,6 +289,14 @@ app.get("/petronas", async(req, res) => {
     })
     .run();
 });
+
+app.get("/metadata",(req,res)=>{
+  try{
+    res.status(200).json(metadata);
+  }catch(e){
+    res.status(501);
+  }
+})
 
 // start the server
 app.listen(port);
