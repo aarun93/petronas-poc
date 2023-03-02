@@ -6,13 +6,7 @@ const art = () => {
   power_moment[3] = document.getElementById("interest_cooking");
   power_moment[4] = document.getElementById("interest_sport");
 
-  var artDoc = document.getElementById("art_select");
-  artDoc.addEventListener("click", function () {
-    for (let i = 0; i < power_moment.length; i++) {
-      power_moment[i].style.display = 'none';
-    }
-    power_moment[0].style.display = 'block';
-  });
+
 
   var musicDoc = document.getElementById("music_select");
   musicDoc.addEventListener("click", function () {
@@ -46,5 +40,8 @@ const art = () => {
     power_moment[4].style.display = 'block';
   });
 }
+
+
+
 
 export { art };
