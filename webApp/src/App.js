@@ -1,16 +1,19 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/style.css';
 import {useEffect, useState,useRef} from 'react'
+
+import { interests, powerMomentsArray } from './js/const';
+import { getVideo } from './js/api';
+
 import desktop_pattern from "./images/desktop_pattern.png";
 import dynamic_logo from "./images/dynamic_logo.png";
 import arrow_down from "./images/arrow_down.png";
-import { interests,powerMomentsArray } from './js/const';
+
 
 function App() {
 
   const [interestVal, setInterestVal] = useState("placeholder");
   const [powerMomentVal, setPowerMomentVal] = useState("placeholder");
   const [powerMoments, setPowerMoments] = useState([]);
+  const [showLoader, setShowLoader] = useState(false);
   const inputNameRef = useRef(null);
 
 
@@ -30,9 +33,14 @@ function App() {
     setPowerMomentVal(e.target.value);
   }
 
+  const submitHandler = () => {
+    var name = inputNameRef.current.value;
+    getVideo(setShowLoader,name,interestVal,powerMomentVal)
+  }
+
   return (
   <div className="App">
-    <header className="App-header">
+      <header className="App-header">
       <div className="pattern_bg">
         <img src={desktop_pattern} alt="petronas pattern" />
       </div>
@@ -70,9 +78,9 @@ function App() {
             <img src={arrow_down} alt="arrow_down" />
           </div>
         </div>
-        <a className="no_underline" href="video.html">
+        <div className="no_underline" onClick={submitHandler}>
           <div className="btn_start margin_top_10"> Power up with dynamic diesel! </div>
-        </a>
+        </div>
       </div>
     </header>
     </div>
