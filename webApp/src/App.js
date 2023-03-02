@@ -1,7 +1,6 @@
 import {useEffect, useState,useRef} from 'react'
 
-import { interests, powerMomentsArray } from './js/const';
-import { getVideo } from './js/api';
+import { getVideo,getMetadata } from './js/api';
 
 import desktop_pattern from "./images/desktop_pattern.png";
 import dynamic_logo from "./images/dynamic_logo.png";
@@ -15,17 +14,23 @@ function App() {
   const [powerMoments, setPowerMoments] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
   const inputNameRef = useRef(null);
+  const [metadata, setMetadata] = useState([]);
 
 
   useEffect(() => {
     console.log(interestVal);
     console.log(powerMomentVal);
-    console.log(inputNameRef.current.value);
-  }, [interestVal,powerMomentVal]);
-
+    console.log(inputNameRef.current.value);    
+  }, [interestVal, powerMomentVal, metadata]);
+  
+  useEffect(() => {
+    getMetadata(setMetadata);
+  }, [])
+  
   const interestOnChange = (e) => {
     setInterestVal(e.target.value);
-    setPowerMoments(powerMomentsArray[e.target.value]);
+    setPowerMoments(metadata?.find(x=>x.id===e.target.value)?.moments
+    );
     setPowerMomentVal("placeholder");
   };
 
@@ -60,7 +65,7 @@ function App() {
         <div className="form-group form-row margin_top">
             <select id="interest_holder" className="form-control form_center" onChange={interestOnChange} defaultValue={"placeholder"}>
             <option value='placeholder' disabled >Select your interests</option>
-              {interests.map((interest, index) => <option key={index} id={index} value={interest}>{interest}</option>)}
+              {metadata.map((interest, index) => <option key={index} id={index} value={interest.id}>{interest.name}</option>)}
             </select>
           <div className="arrow_down">
             <img src={arrow_down} alt="arrow_down" />
@@ -70,9 +75,9 @@ function App() {
           <h2 className="h2_text h2_smaller">My power moment is</h2>
         </div>
         <div className="form-group form-row margin_top">
-            <select id="interest_value" className="form-control form_center" onChange={onChangePowerMoment} defaultValue={powerMomentVal}>
+            <select id="interest_value" className="form-control form_center" onChange={onChangePowerMoment} value={powerMomentVal}>
             <option value='placeholder' disabled >Select your Power moment</option>
-              {powerMoments.map((powerMoment, index) => <option key={index} id={index} value={powerMoment}>{powerMoment}</option>)}
+              {powerMoments.map((powerMoment, index) => <option key={index} id={index} value={powerMoment.id}>{powerMoment.description}</option>)}
             </select>
           <div className="arrow_down">
             <img src={arrow_down} alt="arrow_down" />

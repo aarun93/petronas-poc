@@ -5,6 +5,9 @@ import App from './App';
 //import './js/main.js';
 import reportWebVitals from './reportWebVitals';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/style.css';  
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
