@@ -1,4 +1,4 @@
-import './css/bootstrap.min.css';  
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/style.css';
 import {useEffect, useState,useRef} from 'react'
 import desktop_pattern from "./images/desktop_pattern.png";
