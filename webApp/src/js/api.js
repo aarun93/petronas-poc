@@ -7,7 +7,7 @@ const getVideo = (setshowLoader,name, interest, powerMoment) => {
     const params = {
         name: name,
         interest: interest,
-        powerMoment:powerMoment
+        moment:powerMoment
     };
     
     axios.get(`${baseUrl}/petronas`, {params})

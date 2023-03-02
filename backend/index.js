@@ -179,9 +179,13 @@ app.get("/petronas", async(req, res) => {
 
   let param = {
     name:"Harshal Bagul",
-    moment:"Making Big Moves With Big Beats"
+    moment:"Baking moments of sweetness"
   }
 
+  // let param = {
+  //   name:req.query.name,
+  //   moment:req.query.moment
+  // }
   const intro = "./assets/clips/videos/introvideo.mp4";
   const outro = "./assets/clips/videos/outrovideo.mp4";
   const dynamicVideo = "./assets/clips/AI-footages/Music/dynamicvideo.mp4";
