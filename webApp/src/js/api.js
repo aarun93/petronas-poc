@@ -29,4 +29,4 @@ const getMetadata = (setMetadata) => {
     });
 }
 
-export { getVideo,getMetadata };
+export { getVideo, getMetadata };

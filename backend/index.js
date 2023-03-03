@@ -9,7 +9,7 @@ require('dotenv').config()
 const fs = require("fs");
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 var app = express();
@@ -71,10 +71,10 @@ app.get("/test", async(req, res) => {
 
   //DAL-EE AI IMAGE
   var generatedImage;
-  if(req.query.enableOpenAi == "true"){
+  //if(req.query.enableOpenAi == "true"){
     try {
       const completion = await openai.createImage({
-        prompt: req.query.prompt,
+        prompt:"fantasy land",
         n: 1,
         size: "1024x1024",
       })
@@ -88,48 +88,48 @@ app.get("/test", async(req, res) => {
         console.log(error.message);
       }
     }
-  }
+  //}
   
   //DAL-EE AI IMAGE
 
 
-  const inputVideo = "sample-5s.mp4";
-  const inputImage = "5847e7a1cef1014c0b5e480f.png";
-  // const inputImage = "https://cdn.fstoppers.com/styles/full/s3/media/2019/12/04/nando-jpeg-quality-screenshot_dsc-hv400v.jpg";
-  const outputVideo = "./output-test.mp4";
+  // const inputVideo = "sample-5s.mp4";
+  // const inputImage = "5847e7a1cef1014c0b5e480f.png";
+  // // const inputImage = "https://cdn.fstoppers.com/styles/full/s3/media/2019/12/04/nando-jpeg-quality-screenshot_dsc-hv400v.jpg";
+  // const outputVideo = "./output-test.mp4";
 
-  const command = ffmpeg();
-  const fs = require("fs");
+  // const command = ffmpeg();
+  // const fs = require("fs");
 
-  command.input(inputVideo);
-  // command.input(inputImage);
-  command.input(generatedImage || inputImage);
-  command.input("out.mp4");
+  // command.input(inputVideo);
+  // // command.input(inputImage);
+  // command.input(generatedImage || inputImage);
+  // command.input("out.mp4");
 
-  command.complexFilter(
-    [
-      {
-        filter: "drawtext",
-        options: {
-          fontfile: "test.ttf",
-          text: req.query.displayText,
-          fontcolor: "red",
-          fontsize: "72",
-          y:"h-100*t"
-        },
-        inputs: "0:v",
-        outputs: "textoutput",
-      },
+  // command.complexFilter(
+  //   [
+  //     {
+  //       filter: "drawtext",
+  //       options: {
+  //         fontfile: "test.ttf",
+  //         text: req.query.displayText,
+  //         fontcolor: "red",
+  //         fontsize: "72",
+  //         y:"h-100*t"
+  //       },
+  //       inputs: "0:v",
+  //       outputs: "textoutput",
+  //     },
       
-      {
-        filter: "overlay",
-        options: {
-          x: 400,
-          y: 25,
-        },
-        inputs: ["textoutput", "1:v"],
-        outputs: "filtered",
-      },
+  //     {
+  //       filter: "overlay",
+  //       options: {
+  //         x: 400,
+  //         y: 25,
+  //       },
+  //       inputs: ["textoutput", "1:v"],
+  //       outputs: "filtered",
+  //     },
       // {
       //   filter: "overlay",
       //   options: {
@@ -149,43 +149,45 @@ app.get("/test", async(req, res) => {
       //   inputs: ["filtered", "2:v"],
       //   outputs: "concatenated",
       // },
-    ],
-    "filtered"
-  );
+  //   ],
+  //   "filtered"
+  // );
 
-  command
-    .output(outputVideo)
-    .videoCodec("libx264")
-    .audioCodec("copy")
-    .on("error", function (err) {
-      console.log("An error occurred: " + err.message);
-    })
-    .on("end", function () {
-      const outputFilePath = `${__dirname}/output-test.mp4`;
-      const output = fs.createReadStream(outputFilePath);
-      output.on("open", () => {
-        res.set("Content-Type", "video/mp4");
-        output.pipe(res);
-      });
-      output.on("error", (err) => {
-        console.error(err);
-        res.status(500).send("Error sending response");
-      });
-    })
-    .run();
+  // command
+  //   .output(outputVideo)
+  //   .videoCodec("libx264")
+  //   .audioCodec("copy")
+  //   .on("error", function (err) {
+  //     console.log("An error occurred: " + err.message);
+  //   })
+  //   .on("end", function () {
+  //     const outputFilePath = `${__dirname}/output-test.mp4`;
+  //     const output = fs.createReadStream(outputFilePath);
+  //     output.on("open", () => {
+  //       res.set("Content-Type", "video/mp4");
+  //       output.pipe(res);
+  //     });
+  //     output.on("error", (err) => {
+  //       console.error(err);
+  //       res.status(500).send("Error sending response");
+  //     });
+  //   })
+  //   .run();
 });
 
 app.get("/petronas", async(req, res) => {
 
-  let param = {
-    name:"Harshal Bagul",
-    moment:"Baking moments of sweetness"
-  }
+ //let param = {
+   // name:"Harshal Bagul",
+   // moment:"Baking moments of sweetness"
+  //}
 
-  // let param = {
-  //   name:req.query.name,
-  //   moment:req.query.moment
-  // }
+   let param = {
+     name:req.query.name,
+     moment:req.query.moment,
+     interest:req.query.interest
+   }
+
   const intro = "./assets/clips/videos/introvideo.mp4";
   const outro = "./assets/clips/videos/outrovideo.mp4";
   const dynamicVideo = "./assets/clips/AI-footages/Music/dynamicvideo.mp4";

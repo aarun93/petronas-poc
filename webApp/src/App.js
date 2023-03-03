@@ -15,6 +15,11 @@ function App() {
   const [showLoader, setShowLoader] = useState(false);
   const inputNameRef = useRef(null);
   const [metadata, setMetadata] = useState([]);
+  const [videoGeturl, setVideoGetUrl] = useState(null);
+  const [showForm,setShowForm]=useState(true)
+
+  const baseUrl = 'http://localhost:9000'
+
 
 
   useEffect(() => {
@@ -40,16 +45,19 @@ function App() {
 
   const submitHandler = () => {
     var name = inputNameRef.current.value;
-    getVideo(setShowLoader,name,interestVal,powerMomentVal)
+    //getVideo(setShowLoader,name,interestVal,powerMomentVal)
+    setVideoGetUrl(`${baseUrl}/petronas?interest=${interestVal}&moment=${powerMomentVal}&name=${name}`)
+    setShowForm(false)
   }
 
   return (
   <div className="App">
-      <header className="App-header">
+      <header className="App-header">    </header>
+
       <div className="pattern_bg">
         <img src={desktop_pattern} alt="petronas pattern" />
       </div>
-      <div className="container">
+      {showForm&&<div className="container">
         <div className="main_logo"></div>
         <div className="dynamic_logo margin_top">
           <img src={dynamic_logo} alt="dynamic logo" />
@@ -63,10 +71,10 @@ function App() {
           </div>
         </div>
         <div className="form-group form-row margin_top">
-            <select id="interest_holder" className="form-control form_center" onChange={interestOnChange} defaultValue={"placeholder"}>
+          <select id="interest_holder" className="form-control form_center" onChange={interestOnChange} defaultValue={"placeholder"}>
             <option value='placeholder' disabled >Select your interests</option>
-              {metadata.map((interest, index) => <option key={index} id={index} value={interest.id}>{interest.name}</option>)}
-            </select>
+            {metadata.map((interest, index) => <option key={index} id={index} value={interest.id}>{interest.name}</option>)}
+          </select>
           <div className="arrow_down">
             <img src={arrow_down} alt="arrow_down" />
           </div>
@@ -75,10 +83,10 @@ function App() {
           <h2 className="h2_text h2_smaller">My power moment is</h2>
         </div>
         <div className="form-group form-row margin_top">
-            <select id="interest_value" className="form-control form_center" onChange={onChangePowerMoment} value={powerMomentVal}>
+          <select id="interest_value" className="form-control form_center" onChange={onChangePowerMoment} value={powerMomentVal}>
             <option value='placeholder' disabled >Select your Power moment</option>
-              {powerMoments.map((powerMoment, index) => <option key={index} id={index} value={powerMoment.id}>{powerMoment.description}</option>)}
-            </select>
+            {powerMoments.map((powerMoment, index) => <option key={index} id={index} value={powerMoment.id}>{powerMoment.description}</option>)}
+          </select>
           <div className="arrow_down">
             <img src={arrow_down} alt="arrow_down" />
           </div>
@@ -86,8 +94,14 @@ function App() {
         <div className="no_underline" onClick={submitHandler}>
           <div className="btn_start margin_top_10"> Power up with dynamic diesel! </div>
         </div>
-      </div>
-    </header>
+      </div>}
+      
+        {videoGeturl &&<div className='centerVideo'>
+          <video controls width="50%">
+            <source src={videoGeturl} type="video/mp4"/>
+        </video>
+        </div>
+        }
     </div>
   );
 }
