@@ -4,6 +4,7 @@ import { getVideo, getMetadata } from "./js/api";
 
 
 import desktop_pattern from "./images/desktop_pattern.png";
+import main_logo from "./images/logo.png";
 import dynamic_logo from "./images/dynamic_logo.png";
 import arrow_down from "./images/arrow_down.png";
 
@@ -57,7 +58,9 @@ function App() {
       </div>
       {showForm && (
         <div className="container">
-          <div className="main_logo"></div>
+          <div className="main_logo">
+            <img src={main_logo} alt="main logo" />
+          </div>
           <div className="dynamic_logo margin_top">
             <img src={dynamic_logo} alt="dynamic logo" />
           </div>
