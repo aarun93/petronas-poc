@@ -6,17 +6,20 @@
             {
                 "id":"rock",
                 "name":"Rock",
-                "description":"Rocking with power"
+                "description":"Rocking with power",
+                "path":"Music/Rocking-with-power-con.mp4"
             },
             {
                 "id":"k-pop",
                 "name":"K-Pop",
-                "description":"Moving with the rhythm"
+                "description":"Moving with the rhythm",
+                "path":"Music/Moving-with-rhythm-con.mp4"
             },
             {
                 "id":"hip-hop",
-                "name":"R&B / Hip-Hop",
-                "description":"Making big moves with big beats"
+                "name":"RB / Hip-Hop",
+                "description":"Making big moves with big beats",
+                "path":"Music/Making-big-moves-with-big-beats-con.mp4"
 
             }
         ]
@@ -28,17 +31,20 @@
             {
                 "id":"graffiti",
                 "name":"Graffiti",
-                "description":"Unleashing can-do creativity"
+                "description":"Unleashing can-do creativity",
+                "path":"Art/Unleashing-can-do-creativity-con.mp4"
             },
             {
                 "id":"painting",
                 "name":"Painting",
-                "description":"Mastering the stroke of genius"
+                "description":"Mastering the stroke of genius",
+                "path":"Art/Mastering-the-stroke-of-genius-con.mp4"
             },
             {
                 "id":"sculpture",
                 "name":"Sculpture",
-                "description":"Making imagination happen"
+                "description":"Making imagination happen",
+                "path":"Art/Making-imagination-happen-con.mp4"
             }
         ]
     },
@@ -49,17 +55,20 @@
             {
                 "id":"hot-air-balloon",
                 "name":"Hot Air Balloon",
-                "description":"Seeing the world from above"
+                "description":"Seeing the world from above",
+                "path":"Travel/Seeing-the-world-from-above-con.mp4"
             },
             {
                 "id":"rock-climbing",
                 "name":"Rock climbing",
-                "description":"Reaching for new heights"
+                "description":"Reaching for new heights",
+                "path":"Travel/Reaching-for-new-heights-con.mp4"
             },
             {
                 "id":"camping",
                 "name":"Camping",
-                "description":"Taking in the night sky"
+                "description":"Taking in the night sky",
+                "path":"Travel/Taking-in-the-night-sky-con.mp4"
             }
         ]
     },
@@ -70,17 +79,20 @@
             {
                 "id":"plating",
                 "name":"Plating",
-                "description":"Creating joy on a plate"
+                "description":"Creating joy on a plate",
+                "path":"Cooking/Creating-joy-on-a-plate-con.mp4"
             },
             {
                 "id":"eating-foodie",
                 "name":"Eating/foodie",
-                "description":"Getting a taste of happiness"
+                "description":"Getting a taste of happiness",
+                "path":"Cooking/Getting-a-taste-of-happiness-con.mp4"
             },
             {
                 "id":"cake-design",
                 "name":"Cake design",
-                "description":"Baking moments of sweetness"
+                "description":"Baking moments of sweetness",
+                "path":"Cooking/Baking-moments-of-sweetness-con.mp4"
             }
         ]
     },
@@ -91,17 +103,20 @@
             {
                 "id":"golf",
                 "name":"Golf",
-                "description":"Taking that winning swing"
+                "description":"Taking that winning swing",
+                "path":"Sports/Taking-that-winning-swing-con.mp4"
             },
             {
                 "id":"running",
                 "name":"Running",
-                "description":"Getting a running start to a great day"
+                "description":"Getting a running start to a great day",
+                "path":"Sports/Getting-a-running-start-to-a-great-day-con.mp4"
             },
             {
                 "id":"cycling",
                 "name":"Cycling",
-                "description":"Blazing trails on two wheels"
+                "description":"Blazing trails on two wheels",
+                "path":"Sports/Blazing-trails-on-two-wheels-con.mp4"
             }
         ]
     }

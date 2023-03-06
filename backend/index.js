@@ -4,8 +4,8 @@ const express = require("express");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
 const { Configuration, OpenAIApi } = require("openai");
-const metadata = require('./assets/json/metadata.json');
-require('dotenv').config()
+const metadata = require("./assets/json/metadata.json");
+require("dotenv").config();
 const fs = require("fs");
 
 const configuration = new Configuration({
@@ -44,54 +44,52 @@ app.post("/", async function (req, res) {
     })
     // save to file
     .save("./out.mp4");
-  
-    try {
-      const completion = await openai.createImage({
-        prompt: "one horse",
-        n: 1,
-        size: "1024x1024",
-      })
-      console.log(completion.data.data[0].url);
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.status);
-        console.log(error.response.data);
-      } else {
-        console.log(error.message);
-      }
+
+  try {
+    const completion = await openai.createImage({
+      prompt: "one horse",
+      n: 1,
+      size: "1024x1024",
+    });
+    console.log(completion.data.data[0].url);
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.status);
+      console.log(error.response.data);
+    } else {
+      console.log(error.message);
     }
-  
+  }
+
   //res.send(response);
-   // res.send("test");
-})
+  // res.send("test");
+});
 
-app.get("/test", async(req, res) => {
-
+app.get("/test", async (req, res) => {
   console.log(req.query.enableOpenAi);
 
   //DAL-EE AI IMAGE
   var generatedImage;
   //if(req.query.enableOpenAi == "true"){
-    try {
-      const completion = await openai.createImage({
-        prompt:"fantasy land",
-        n: 1,
-        size: "1024x1024",
-      })
-      console.log(completion.data.data[0].url);
-      generatedImage = completion.data.data[0].url
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.status);
-        console.log(error.response.data);
-      } else {
-        console.log(error.message);
-      }
+  try {
+    const completion = await openai.createImage({
+      prompt: "fantasy land",
+      n: 1,
+      size: "1024x1024",
+    });
+    console.log(completion.data.data[0].url);
+    generatedImage = completion.data.data[0].url;
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.status);
+      console.log(error.response.data);
+    } else {
+      console.log(error.message);
     }
+  }
   //}
-  
-  //DAL-EE AI IMAGE
 
+  //DAL-EE AI IMAGE
 
   // const inputVideo = "sample-5s.mp4";
   // const inputImage = "5847e7a1cef1014c0b5e480f.png";
@@ -120,7 +118,7 @@ app.get("/test", async(req, res) => {
   //       inputs: "0:v",
   //       outputs: "textoutput",
   //     },
-      
+
   //     {
   //       filter: "overlay",
   //       options: {
@@ -130,25 +128,25 @@ app.get("/test", async(req, res) => {
   //       inputs: ["textoutput", "1:v"],
   //       outputs: "filtered",
   //     },
-      // {
-      //   filter: "overlay",
-      //   options: {
-      //     x: 250,
-      //     y: 100,
-      //   },
-      //   inputs: ["filtered", "2:v"],
-      //   outputs: "merged",
-      // },
-      // {
-      //   filter: "concat",
-      //   options: {
-      //     n: 2, 
-      //     v: 1, 
-      //     a: 0,
-      //   },
-      //   inputs: ["filtered", "2:v"],
-      //   outputs: "concatenated",
-      // },
+  // {
+  //   filter: "overlay",
+  //   options: {
+  //     x: 250,
+  //     y: 100,
+  //   },
+  //   inputs: ["filtered", "2:v"],
+  //   outputs: "merged",
+  // },
+  // {
+  //   filter: "concat",
+  //   options: {
+  //     n: 2,
+  //     v: 1,
+  //     a: 0,
+  //   },
+  //   inputs: ["filtered", "2:v"],
+  //   outputs: "concatenated",
+  // },
   //   ],
   //   "filtered"
   // );
@@ -175,26 +173,24 @@ app.get("/test", async(req, res) => {
   //   .run();
 });
 
-app.get("/petronas", async(req, res) => {
+app.get("/petronas", async (req, res) => {
 
- //let param = {
-   // name:"Harshal Bagul",
-   // moment:"Baking moments of sweetness"
-  //}
+  console.log(req.query);
 
-   let param = {
-     name:req.query.name,
-     moment:req.query.moment,
-     interest:req.query.interest
-   }
+  let param = {
+    name: req.query.name,
+    moment: JSON.parse(req.query.moment),
+    interest: req.query.interest,
+  };
+
+  console.log(param);
 
   const intro = "./assets/clips/videos/introvideo.mp4";
   const outro = "./assets/clips/videos/outrovideo.mp4";
-  const dynamicVideo = "./assets/clips/AI-footages/Music/dynamicvideo.mp4";
+  const dynamicVideo = `./assets/clips/AI-footages/${param.moment.path}`;
   const powermomentout = "./output-test.mp4";
 
   const command = ffmpeg();
-
 
   command.input(intro);
   command.input(dynamicVideo);
@@ -205,12 +201,13 @@ app.get("/petronas", async(req, res) => {
         filter: "drawtext",
         options: {
           fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
-          text: param.moment,
+          text: param.moment.description,
           fontcolor: "white",
           fontsize: "80",
-          alpha:'if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,2.5),1,if(lt(t,3),(0.5-(t-2.5))/0.5,0))))',
-          x:"(w-text_w)/2",
-          y:"(h-text_h)/2"
+          alpha:
+            "if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,2.5),1,if(lt(t,3),(0.5-(t-2.5))/0.5,0))))",
+          x: "(w-text_w)/2",
+          y: "(h-text_h)/2",
         },
         inputs: "0:v",
         outputs: "powermoment1",
@@ -222,9 +219,10 @@ app.get("/petronas", async(req, res) => {
           text: `By ${param.name}`,
           fontcolor: "white",
           fontsize: "40",
-          alpha:'if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,2.5),1,if(lt(t,3),(0.5-(t-2.5))/0.5,0))))',
-          x:"(w-text_w)/2",
-          y:"(h-text_h)/1.7"
+          alpha:
+            "if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,2.5),1,if(lt(t,3),(0.5-(t-2.5))/0.5,0))))",
+          x: "(w-text_w)/2",
+          y: "(h-text_h)/1.7",
         },
         inputs: "powermoment1",
         outputs: "intro",
@@ -233,12 +231,13 @@ app.get("/petronas", async(req, res) => {
         filter: "drawtext",
         options: {
           fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
-          text: 'I',
+          text: "I",
           fontcolor: "red",
           fontsize: "80",
-          alpha:'if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,1.5),1,if(lt(t,2),(0.5-(t-1.5))/0.5,0))))',
-          x:"(w-text_w)/2",
-          y:"(h-text_h)/2.1"
+          alpha:
+            "if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,1.5),1,if(lt(t,2),(0.5-(t-1.5))/0.5,0))))",
+          x: "(w-text_w)/2",
+          y: "(h-text_h)/2.1",
         },
         inputs: "1:v",
         outputs: "dynamic",
@@ -250,23 +249,24 @@ app.get("/petronas", async(req, res) => {
           text: param.name,
           fontcolor: "white",
           fontsize: "80",
-          alpha:'if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,1.5),1,if(lt(t,2),(0.5-(t-1.5))/0.5,0))))',
-          x:"(w-text_w)/2",
-          y:"(h-text_h)/2.1"
+          alpha:
+            "if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,1.5),1,if(lt(t,2),(0.5-(t-1.5))/0.5,0))))",
+          x: "(w-text_w)/2",
+          y: "(h-text_h)/2.1",
         },
         inputs: "2:v",
         outputs: "outro",
       },
       {
-        filter: 'concat',
+        filter: "concat",
         options: {
           n: 3,
           v: 1,
           a: 0,
         },
-        inputs: ['intro', 'dynamic' ,'outro'],
-        outputs: 'out'
-      }
+        inputs: ["intro", "dynamic", "outro"],
+        outputs: "out",
+      },
     ],
     "out"
   );
@@ -277,6 +277,7 @@ app.get("/petronas", async(req, res) => {
     .audioCodec("copy")
     .on("error", function (err) {
       console.log("An error occurred: " + err);
+      res.sendStatus(501);
     })
     .on("progress", function (info) {
       console.log("My info - : " + JSON.stringify(info));
@@ -296,13 +297,13 @@ app.get("/petronas", async(req, res) => {
     .run();
 });
 
-app.get("/metadata",(req,res)=>{
-  try{
+app.get("/metadata", (req, res) => {
+  try {
     res.status(200).json(metadata);
-  }catch(e){
+  } catch (e) {
     res.status(501);
   }
-})
+});
 
 // start the server
 app.listen(port);
