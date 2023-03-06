@@ -55,7 +55,10 @@ body {
 .main_logo {
   width: 100px;
   height: 100px;
-  background: white;
+}
+.main_logo img{
+  width:100%;
+  height:auto;
 }
 .dynamic_logo {
   max-width: 195px;
