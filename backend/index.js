@@ -175,15 +175,11 @@ app.get("/test", async (req, res) => {
 
 app.get("/petronas", async (req, res) => {
 
-  console.log(req.query);
-
   let param = {
     name: req.query.name,
     moment: JSON.parse(req.query.moment),
     interest: req.query.interest,
   };
-
-  console.log(param);
 
   const intro = "./assets/clips/videos/introvideo.mp4";
   const outro = "./assets/clips/videos/outrovideo.mp4";
