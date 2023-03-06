@@ -53,8 +53,8 @@ body {
   margin-top: 25px;
 }
 .main_logo {
-  width: 100px;
-  height: 100px;
+  width: 115px;
+  height: 115px;
 }
 .main_logo img{
   width:100%;
@@ -198,8 +198,8 @@ input::placeholder {
     margin-top: 5%;
   }
   .main_logo {
-    width: 55px;
-    height: 55px;
+    width: 75px;
+    height: 75px;
     background: white;
   }
   .dynamic_logo {
