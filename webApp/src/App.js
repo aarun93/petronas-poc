@@ -110,7 +110,7 @@ function App() {
                 Select your Power moment
               </option>
               {powerMoments.map((powerMoment, index) => (
-                <option key={index} id={index} value={powerMoment.id}>
+                <option key={index} id={index} value={JSON.stringify(powerMoment)}>
                   {powerMoment.description}
                 </option>
               ))}
