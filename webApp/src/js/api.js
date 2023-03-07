@@ -1,7 +1,8 @@
 
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:9000'
+const baseUrl = window.location.origin.includes("localhost")?"http://localhost:9000" : 'https://petronas-poc-backend-wy5r-aarun93.vercel.app'
+//const baseUrl = "http://localhost:9000";
 
 const getVideo = (setshowLoader,name, interest, powerMoment) => {
     const params = {
@@ -29,4 +30,8 @@ const getMetadata = (setMetadata) => {
     });
 }
 
-export { getVideo, getMetadata };
+const getBaseUrl = () => {
+    return baseUrl;
+}
+
+export { getVideo, getMetadata, getBaseUrl };

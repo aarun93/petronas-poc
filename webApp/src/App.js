@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
-import { getVideo, getMetadata } from "./js/api";
+import { getMetadata,getBaseUrl } from "./js/api";
 
 
 import desktop_pattern from "./images/desktop_pattern.png";
@@ -12,13 +12,14 @@ function App() {
   const [interestVal, setInterestVal] = useState("placeholder");
   const [powerMomentVal, setPowerMomentVal] = useState("placeholder");
   const [powerMoments, setPowerMoments] = useState([]);
-  const [showLoader, setShowLoader] = useState(false);
+  //const [showLoader, setShowLoader] = useState(false);
   const inputNameRef = useRef(null);
   const [metadata, setMetadata] = useState([]);
   const [videoGeturl, setVideoGetUrl] = useState(null);
   const [showForm, setShowForm] = useState(true);
 
-  const baseUrl = "http://localhost:9000";
+  //const baseUrl = "https://petronas-poc-backend-wy5r-aarun93.vercel.app";
+  //const baseUrl = "http://localhost:9000";
 
   useEffect(() => {
     console.log(interestVal);
@@ -44,7 +45,7 @@ function App() {
     var name = inputNameRef.current.value;
     //getVideo(setShowLoader,name,interestVal,powerMomentVal)
     setVideoGetUrl(
-      `${baseUrl}/petronas?interest=${interestVal}&moment=${powerMomentVal}&name=${name}`
+      `${getBaseUrl()}/petronas?interest=${interestVal}&moment=${powerMomentVal}&name=${name}`
     );
     setShowForm(false);
   };
