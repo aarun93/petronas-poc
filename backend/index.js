@@ -181,10 +181,12 @@ app.get("/petronas", async (req, res) => {
     interest: req.query.interest,
   };
 
-  const intro = "./assets/clips/videos/introvideo.mp4";
-  const outro = "./assets/clips/videos/outrovideo.mp4";
+  res.setHeader('Content-Type', 'video/mp4');
+  res.setHeader('Transfer-Encoding', 'chunked');
+
+  const intro = "./assets/clips/videos/petronas-intro.mp4";
+  const outro = "./assets/clips/videos/petronas-outro.mp4";
   const dynamicVideo = `./assets/clips/AI-footages/${param.moment.path}`;
-  const powermomentout = "./output-test.mp4";
 
   const command = ffmpeg();
 
@@ -227,7 +229,7 @@ app.get("/petronas", async (req, res) => {
         filter: "drawtext",
         options: {
           fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
-          text: "I",
+          text: " ",
           fontcolor: "red",
           fontsize: "80",
           alpha:
@@ -268,29 +270,17 @@ app.get("/petronas", async (req, res) => {
   );
 
   command
-    .output(powermomentout)
     .videoCodec("libx264")
     .audioCodec("copy")
+    .format('mp4')
+    .outputOptions(['-movflags frag_keyframe+empty_moov'])
+    .pipe(res, { end: true })
     .on("error", function (err) {
-      console.log("An error occurred: " + err);
-      res.sendStatus(501);
-    })
-    .on("progress", function (info) {
-      console.log("My info - : " + JSON.stringify(info));
+      console.log(`An error occurred: ${err.message}`);
     })
     .on("end", function () {
-      const outputFilePath = `${__dirname}/output-test.mp4`;
-      const output = fs.createReadStream(outputFilePath);
-      output.on("open", () => {
-        res.set("Content-Type", "video/mp4");
-        output.pipe(res);
-      });
-      output.on("error", (err) => {
-        console.error(err);
-        res.status(500).send("Error sending response");
-      });
+      console.log("Video Conversion completed");
     })
-    .run();
 });
 
 app.get("/metadata", (req, res) => {
