@@ -13,6 +13,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 var app = express();
+app.use(require('express-status-monitor')());
 ffmpeg.setFfmpegPath(ffmpegPath);
 app.use(cors());
 //app.use(bodyParser.urlencoded({ extended: false }));
@@ -274,13 +275,13 @@ app.get("/petronas", async (req, res) => {
     .audioCodec("copy")
     .format('mp4')
     .outputOptions(['-movflags frag_keyframe+empty_moov'])
-    .pipe(res, { end: true })
     .on("error", function (err) {
       console.log(`An error occurred: ${err.message}`);
     })
     .on("end", function () {
       console.log("Video Conversion completed");
     })
+    .pipe(res, { end: true })
 });
 
 app.get("/metadata", (req, res) => {
