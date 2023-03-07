@@ -32,13 +32,13 @@
                 "id":"graffiti",
                 "name":"Graffiti",
                 "description":"Unleashing can-do creativity",
-                "path":"Art/Unleashing-can-do-creativity.mov"
+                "path":"Art/Unleashing-can-do-creativity.mp4"
             },
             {
                 "id":"painting",
                 "name":"Painting",
                 "description":"Mastering the stroke of genius",
-                "path":"Art/Mastering-the-stroke-of-genius.mov"
+                "path":"Art/Mastering-the-stroke-of-genius.mp4"
             },
             {
                 "id":"sculpture",
