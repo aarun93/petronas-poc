@@ -176,6 +176,8 @@ app.get("/test", async (req, res) => {
 
 app.get("/petronas", async (req, res) => {
 
+  console.log("Video Generation starts");
+
   //Firebase Configuration
   // var admin = require("firebase-admin");
   // var serviceAccount = require("./petronas-d1a58-firebase-adminsdk-7zx0q-fe44743029.json");
@@ -310,6 +312,7 @@ app.get("/petronas", async (req, res) => {
 });
 
 app.get("/metadata", (req, res) => {
+  console.log("Metadata Served:");
   try {
     res.status(200).json(metadata);
   } catch (e) {
