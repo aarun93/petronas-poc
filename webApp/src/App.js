@@ -68,6 +68,13 @@ function App() {
     }
   };
 
+  const resetForm = () => {
+    setShowForm(true);
+    setVideoGetUrl(null);
+    setForm({ name: "", interest: "placeholder", powerMoment: "placeholder" });
+    setErrors({})
+  }
+
   return (
     <div>
     {showLoader && (
@@ -81,11 +88,11 @@ function App() {
       <img src={desktop_pattern} alt="petronas pattern" />
     </div>
     <div className="container my-3">
-      <img className="main_logo mb-3" src={main_logo} alt="main logo" />
-      <img className="dynamic_logo mb-3" src={dynamic_logo} alt="dynamic logo" />
-     
+
         {showForm && (
           <>
+            <img className="main_logo mb-3" src={main_logo} alt="main logo" />
+            <img className="dynamic_logo mb-3" src={dynamic_logo} alt="dynamic logo" />
            <h4 className="text-center">
            Tell us your <br /> power moment!
          </h4>
@@ -179,7 +186,15 @@ function App() {
                     setShowLoader(false);
                 }}>
             <source src={videoGeturl} type="video/mp4" />
-          </video>
+            </video>
+            <Button
+            variant="outline-light"
+            className="submit-btn mt-3"
+              type="submit"
+              onClick={resetForm}
+          >
+            Reset
+          </Button>
         </div>
       )}
     </div>
