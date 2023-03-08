@@ -1,91 +1,120 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
-import { getMetadata,getBaseUrl } from "./js/api";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-
+import { getMetadata, getBaseUrl } from "./js/api";
 import desktop_pattern from "./images/desktop_pattern.png";
 import main_logo from "./images/logo.png";
 import dynamic_logo from "./images/dynamic_logo.png";
-import arrow_down from "./images/arrow_down.png";
+import loading_img from "./images/SPLASH-SCREEN.gif";
 
 function App() {
-  const [interestVal, setInterestVal] = useState("placeholder");
-  const [powerMomentVal, setPowerMomentVal] = useState("placeholder");
   const [powerMoments, setPowerMoments] = useState([]);
-  //const [showLoader, setShowLoader] = useState(false);
-  const inputNameRef = useRef(null);
   const [metadata, setMetadata] = useState([]);
   const [videoGeturl, setVideoGetUrl] = useState(null);
   const [showForm, setShowForm] = useState(true);
-
-  //const baseUrl = "https://petronas-poc-backend-wy5r-aarun93.vercel.app";
-  //const baseUrl = "http://localhost:9000";
-
-  useEffect(() => {
-    console.log(interestVal);
-    console.log(powerMomentVal);
-    console.log(inputNameRef.current.value);
-  }, [interestVal, powerMomentVal, metadata]);
+  const [ form, setForm ] = useState({name:"",interest:"placeholder",powerMoment:"placeholder"})
+  const [errors, setErrors] = useState({})
+  const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
     getMetadata(setMetadata);
   }, []);
 
-  const interestOnChange = (e) => {
-    setInterestVal(e.target.value);
-    setPowerMoments(metadata?.find((x) => x.id === e.target.value)?.moments);
-    setPowerMomentVal("placeholder");
+  const setField = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value
+    })
+    if ( !!errors[field] ) setErrors({
+      ...errors,
+      [field]: null
+    })
+  }
+
+  const interestOnChange = (val) => {
+    setField('interest', val);
+    setPowerMoments(metadata?.find((x) => x.id === val)?.moments);
   };
 
-  const onChangePowerMoment = (e) => {
-    setPowerMomentVal(e.target.value);
-  };
+  const findFormErrors = () => {
+    const { name,interest,powerMoment } = form
+    const newErrors = {}
+    // name errors
+    if (!name || name === '') newErrors.name = 'Please input name.'
+    if (!interest || interest === 'placeholder') { newErrors.interest = 'Please select interest.' }
+    else {
+      interestOnChange(interest)
+    }
+    if ( !powerMoment || powerMoment === 'placeholder' ) newErrors.powerMoment = 'Please select power moment.'
+    return newErrors
+}
 
-  const submitHandler = () => {
-    var name = inputNameRef.current.value;
-    //getVideo(setShowLoader,name,interestVal,powerMomentVal)
-    setVideoGetUrl(
-      `${getBaseUrl()}/petronas?interest=${interestVal}&moment=${powerMomentVal}&name=${name}`
-    );
-    setShowForm(false);
+  const submitHandler = (event) => {
+    event.preventDefault()
+    // get our new errors
+    const newErrors = findFormErrors()
+    if ( Object.keys(newErrors).length > 0 ) {
+      //  got errors
+      setErrors(newErrors)
+    } else {
+      // No errors! Put any logic here for the form submission!
+      setVideoGetUrl(
+        `${getBaseUrl()}/petronas?interest=${form.interest}&moment=${form.powerMoment}&name=${form.name}`
+      );
+      setShowLoader(true);
+      setShowForm(false);
+    }
   };
 
   return (
-    <div className="App">
-      <header className="App-header"> </header>
+    <div>
+    {showLoader && (
+      <>
+        <div className="align-self-center loader_screen">
+          <img src={loading_img} alt="petronas loading" />
+        </div>
+      </>
+    )}
+    <div className="pattern_bg">
+      <img src={desktop_pattern} alt="petronas pattern" />
+    </div>
+    <div className="container my-3">
+      <img className="main_logo mb-3" src={main_logo} alt="main logo" />
+      <img className="dynamic_logo mb-3" src={dynamic_logo} alt="dynamic logo" />
+     
+        {showForm && (
+          <>
+           <h4 className="text-center">
+           Tell us your <br /> power moment!
+         </h4>
+        <Form
+          className="form-wrapper"
+        >
+          <Form.Group  className="w-100">
+            <Form.Control
+              required
+              className="text-center"
+              type="text"
+              placeholder="Name"
+                onChange={e => setField('name', e.target.value)}
+                isInvalid={ !!errors.name }
 
-      <div className="pattern_bg">
-        <img src={desktop_pattern} alt="petronas pattern" />
-      </div>
-      {showForm && (
-        <div className="container">
-          <div className="main_logo">
-            <img src={main_logo} alt="main logo" />
-          </div>
-          <div className="dynamic_logo margin_top">
-            <img src={dynamic_logo} alt="dynamic logo" />
-          </div>
-          <div className="margin_top_5">
-            <h2 className="h2_text">
-              Tell us your <br /> power moment!{" "}
-            </h2>
-          </div>
-          <div className="form-row margin_top">
-            <div className="col">
-              <input
-                type="text"
-                className="form-control form_center"
-                placeholder="Name"
-                ref={inputNameRef}
-              />
-            </div>
-          </div>
-          <div className="form-group form-row margin_top">
-            <select
-              id="interest_holder"
-              className="form-control form_center"
-              onChange={interestOnChange}
-              defaultValue={"placeholder"}
+            />
+            <Form.Control.Feedback type="invalid">
+            { errors.name }
+            </Form.Control.Feedback>
+          </Form.Group>
+  
+          <Form.Group  className="w-100">
+            <Form.Select
+              required
+              key="interestSelect"
+              onChange={e=>interestOnChange(e.target.value)}
+                defaultValue={"placeholder"}
+                isInvalid={ !!errors.interest }
+
             >
               <option value="placeholder" disabled>
                 Select your interests
@@ -95,51 +124,66 @@ function App() {
                   {interest.name}
                 </option>
               ))}
-            </select>
-            <div className="arrow_down">
-              <img src={arrow_down} alt="arrow_down" />
-            </div>
-          </div>
-          <div className="margin_top_5">
-            <h2 className="h2_text h2_smaller">My power moment is</h2>
-          </div>
-          <div className="form-group form-row margin_top">
-            <select
-              id="interest_value"
-              className="form-control form_center"
-              onChange={onChangePowerMoment}
-              value={powerMomentVal}
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                { errors.interest }
+            </Form.Control.Feedback>
+          </Form.Group>
+  
+            <h4 className="text-center">My power moment is</h4>
+  
+          <Form.Group className="w-100" >
+            <Form.Select
+              required
+              key="powerMomentSelect"
+              className="text-center"
+              onChange={e => setField('powerMoment', e.target.value)}
+                value={form.powerMoment}
+                isInvalid={ !!errors.powerMoment }
+
             >
               <option value="placeholder" disabled>
-                Select your Power moment
+                Select your power moment
               </option>
               {powerMoments.map((powerMoment, index) => (
-                <option key={index} id={index} value={JSON.stringify(powerMoment)}>
+                <option
+                  key={index}
+                  id={index}
+                  value={JSON.stringify(powerMoment)}
+                >
                   {powerMoment.description}
                 </option>
               ))}
-            </select>
-            <div className="arrow_down">
-              <img src={arrow_down} alt="arrow_down" />
-            </div>
-          </div>
-          <div className="no_underline" onClick={submitHandler}>
-            <div className="btn_start margin_top_10">
-              {" "}
-              Power up with dynamic diesel!{" "}
-            </div>
-          </div>
-        </div>
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+              { errors.powerMoment }
+            </Form.Control.Feedback>
+          </Form.Group>
+  
+          <Button
+            variant="outline-light"
+            className="submit-btn mt-3"
+              type="submit"
+              onClick={submitHandler}
+          >
+            Power up with dynamic diesel!
+          </Button>
+            </Form>
+          </>
       )}
-
       {videoGeturl && (
         <div className="centerVideo">
-          <video controls width="50%">
+            <video controls width="100%"
+              onLoadedData={() => {
+                    console.log('video is loaded!')
+                    setShowLoader(false);
+                }}>
             <source src={videoGeturl} type="video/mp4" />
           </video>
         </div>
       )}
     </div>
+  </div>
   );
 }
 export default App;

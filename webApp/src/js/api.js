@@ -1,8 +1,7 @@
 
 import axios from 'axios';
 
-const baseUrl = window.location.origin.includes("localhost")?"http://localhost:9000" : 'https://petronas-poc-backend.vercel.app'
-//const baseUrl = "http://localhost:9000";
+const baseUrl = window.location.origin.includes("localhost") ? "http://localhost:9000" : 'https://petronas-poc-backend.vercel.app';
 
 const getVideo = (setshowLoader,name, interest, powerMoment) => {
     const params = {
