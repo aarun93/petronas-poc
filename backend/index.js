@@ -91,12 +91,9 @@ app.get("/petronas", async (req, res) => {
   res.setHeader("Content-Type", "video/mp4");
   res.setHeader("Transfer-Encoding", "chunked");
 
-  const intro =
-    "https://storage.googleapis.com/petronas-d1a58.appspot.com/assets/clips/videos/petronas-intro.mp4?GoogleAccessId=firebase-adminsdk-7zx0q%40petronas-d1a58.iam.gserviceaccount.com&Expires=1702310400&Signature=TxNHi86s7XSYbwV2Dg7IYkoAzpz62O1WwnCIdIxOotKR4ixdIxZyKVgdSqJ0TOXJkMzT9xSOpAWfdLSIqLb4ir2%2B%2FnN62XeV3Z5B4ticoPJFc4B%2Fap%2FAp7j3rBGfJUoDcHMnkZGEIjmjSgKrxHFLJnVgStIHDqjaGJLTxNsh7bCtyl4ZoTxN2eO6ZQfIPEclfhc3oR7BpjdXBnmWnJLONqzvBHO1TOzkf%2FjTDGFg3QnMr8zBtzDeQUKEhFo7ddVyLHhb7wq7qCJQLZyq8xL14s2ObCApMlegXEY0fbvJC3pKlppR7KemjXhMPjYHqqjvo8PQmG7ZiTL1S3JRr8iYDQ%3D%3D";
-  const outro =
-    "https://storage.googleapis.com/petronas-d1a58.appspot.com/assets/clips/videos/petronas-outro.mp4?GoogleAccessId=firebase-adminsdk-7zx0q%40petronas-d1a58.iam.gserviceaccount.com&Expires=1702310400&Signature=VLvk%2FfYvtUa%2BQLy7O4VB5ni4CHiC%2B%2Bfcca5%2BWrbD1gNII1OFxEqmrWQiV7RZH42eCLWWm%2FxzmYXImeNOdl4STN3mq6gpDR8xDW5PYqxQhOp%2BKA8BfZkhNaybnZZfK9kZePUqrIWSRpqzdvkziP6nEEMqZmbWhgUmrzVdXszFvKZmyqug1MXphwZcX6n4SUK%2BTp3nCo6f7R%2BW%2BY9c%2B1LEIz7fIym%2BRbhb1aoO%2BT1zhzeJfwW7mZ3Htj86r5EBqZSdYvaJsMVLzrpb3j1KS9iUdsrzkpUqxAvbfqwZGOepEhabFRbZ%2FNK%2FoqjPkWsLnS5zGHAmI0C1%2FrqVd8zXMTIOrw%3D%3D";
-  const dynamicVideo =
-    "https://storage.googleapis.com/petronas-d1a58.appspot.com/assets/clips/AI-footages/Music/Making-big-moves-with-big-beats.mp4?GoogleAccessId=firebase-adminsdk-7zx0q%40petronas-d1a58.iam.gserviceaccount.com&Expires=1702310400&Signature=ltuG9dV9k7WTiXEQJn4xTjareUFdA3kk8OLEfOrqVPIPG6BpadSGKhCrO06Ahxrzii8s2bwKk7d4NIPlY6SIZpslaQwDIEBS%2BCrS%2FqFnmObauU7iPGt2btcr4F%2FBQBuq1gBssHGPWPBxo3bgTFcS3Gk3WDLFXZ73lqaR0FrwHd3pyYfHjMyzALBnX%2BeD1rJHJ0Azhl7nwhiImsaL8xdOIDTfhI2WizSpWpefKWjWqGX2nchszLA3JgcjyChZt%2Fq9OJn%2BTx%2B8BRJufs5OpaTvuFQ2MqZ0P8vkHxHcc8Rc0VU1bIM9zlQHQ1D0XJ%2BjlI20n%2Flr7iDf0tyH0b%2BntR0UzA%3D%3D";
+  const intro = "./assets/clips/videos/petronas-intro.mp4";
+  const outro = "./assets/clips/videos/petronas-outro.mp4";
+  const dynamicVideo = "./assets/clips/AI-footages/Music/Rocking-with-power.mp4";
 
   const command = ffmpeg();
 
