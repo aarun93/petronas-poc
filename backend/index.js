@@ -13,7 +13,6 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 var app = express();
-app.use(require("express-status-monitor")());
 ffmpeg.setFfmpegPath(ffmpegPath);
 app.use(cors());
 //app.use(bodyParser.urlencoded({ extended: false }));
@@ -57,30 +56,6 @@ app.get("/", async function (req, res) {
 
 app.get("/petronas", async (req, res) => {
   console.log("Video Generation starts");
-
-  //Firebase Configuration
-  // var admin = require("firebase-admin");
-  // var serviceAccount = require("./petronas-d1a58-firebase-adminsdk-7zx0q-fe44743029.json");
-  // admin.initializeApp({
-  //   credential: admin.credential.cert(serviceAccount),
-  //   storageBucket: "gs://petronas-d1a58.appspot.com/",
-  // });
-  // var bucket = admin.storage().bucket();
-  // const introfile = await bucket.file('assets/clips/videos/petronas-intro.mp4').getSignedUrl({
-  //   action: 'read',
-  //   expires: '12-12-2023'
-  // });
-  // const outrofile = await bucket.file('assets/clips/videos/petronas-outro.mp4').getSignedUrl({
-  //   action: 'read',
-  //   expires: '12-12-2023'
-  // });
-  // const dynamicfile = await bucket.file('assets/clips/AI-footages/Music/Making-big-moves-with-big-beats.mp4').getSignedUrl({
-  //   action: 'read',
-  //   expires: '12-12-2023'
-  // });
-
-  // console.log(outrofile[0])
-  // return res.sendStatus(200);
 
   let param = {
     name: req.query.name,
