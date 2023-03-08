@@ -1,0 +1,49 @@
+Arguments: 
+  /Users/aruneswaran.a.selvam/.nvm/versions/node/v16.18.1/bin/node /usr/local/Cellar/yarn/1.22.19/libexec/bin/yarn.js
+
+PATH: 
+  /Users/aruneswaran.a.selvam/.nvm/versions/node/v16.18.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/aruneswaran.a.selvam/.dotnet/tools/
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.18.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, scandir '/Users/aruneswaran.a.selvam/Desktop/videoGen/backend/node_modules/@ffmpeg-installer/darwin-x64'
+
+npm manifest: 
+  {
+    "name": "videogen",
+    "version": "1.0.0",
+    "description": "Video Generator POC",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "nodemon index.js"
+    },
+    "author": "Arun",
+    "license": "ISC",
+    "dependencies": {
+      "@ffmpeg-installer/ffmpeg": "^1.0.13",
+      "canvas": "^2.11.0",
+      "cors": "^2.8.5",
+      "dotenv": "^16.0.3",
+      "express": "^4.18.2",
+      "express-status-monitor": "^1.3.4",
+      "ffmpeg-static": "^5.1.0",
+      "fluent-ffmpeg": "^2.1.2",
+      "nodemon": "^2.0.20",
+      "openai": "^3.1.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
