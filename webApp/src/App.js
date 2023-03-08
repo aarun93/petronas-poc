@@ -7,6 +7,7 @@ import { getMetadata, getBaseUrl } from "./js/api";
 import desktop_pattern from "./images/desktop_pattern.png";
 import main_logo from "./images/logo.png";
 import dynamic_logo from "./images/dynamic_logo.png";
+import loading_img from "./images/SPLASH-SCREEN.gif";
 
 function App() {
   const [powerMoments, setPowerMoments] = useState([]);
@@ -15,7 +16,7 @@ function App() {
   const [showForm, setShowForm] = useState(true);
   const [ form, setForm ] = useState({name:"",interest:"placeholder",powerMoment:"placeholder"})
   const [errors, setErrors] = useState({})
-    //const [showLoader, setShowLoader] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
     getMetadata(setMetadata);
@@ -62,12 +63,20 @@ function App() {
       setVideoGetUrl(
         `${getBaseUrl()}/petronas?interest=${form.interest}&moment=${form.powerMoment}&name=${form.name}`
       );
+      setShowLoader(true);
       setShowForm(false);
     }
   };
 
   return (
     <div>
+    {showLoader && (
+      <>
+        <div className="align-self-center loader_screen">
+          <img src={loading_img} alt="petronas loading" />
+        </div>
+      </>
+    )}
     <div className="pattern_bg">
       <img src={desktop_pattern} alt="petronas pattern" />
     </div>
@@ -167,6 +176,7 @@ function App() {
             <video controls width="100%"
               onLoadedData={() => {
                     console.log('video is loaded!')
+                    setShowLoader(false);
                 }}>
             <source src={videoGeturl} type="video/mp4" />
           </video>

@@ -108,7 +108,9 @@ input::placeholder {
   color: var(--primary-text-colour) !important;
   left: 100px !important;
 }
-
+.form-select option{
+  color:#575757;
+} 
 .centerVideo {
   justify-content: center;
   display: flex;
@@ -118,4 +120,20 @@ input::placeholder {
 
 .invalid-feedback {
   text-align: center;
+}
+.loader_screen{
+  position:fixed;
+  height:100vh;
+  width:100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:white;
+  top:0;
+  z-index:99;
+}
+.loader_screen img{
+  max-width:290px;
+  width:100%;
+  height:auto;
 }
