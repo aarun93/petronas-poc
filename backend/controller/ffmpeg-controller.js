@@ -205,7 +205,7 @@ exports.mergeVideosWithAudio = function (req, res) {
     })
     .format("mp4")
     .output(outputVideo)
-    .outputOptions(["-movflags frag_keyframe+empty_moov"])
+    // .outputOptions(["-movflags frag_keyframe+empty_moov"])  //Uncomment for stream the video
     .run();
 };
 
