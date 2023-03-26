@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const baseUrl = window.location.origin.includes("localhost") ? "http://localhost:9000" : 'http://34.124.136.148:9000';
+const baseUrl = window.location.origin.includes("localhost") ? "http://localhost:9000" : 'http://34.143.195.52:9000';
 
 const getVideo = (setshowLoader,name, interest, powerMoment) => {
     const params = {
