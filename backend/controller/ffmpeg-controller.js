@@ -118,7 +118,7 @@ exports.mergeVideosWithAudio = function (req, res) {
   };
 
   res.setHeader("Content-Type", "video/mp4");
-  res.setHeader("Transfer-Encoding", "chunked");
+  // res.setHeader("Transfer-Encoding", "chunked");
 
   const intro = "./assets/clips/videos/petronas-intro.mp4";
   const outro = "./assets/clips/videos/petronas-outro.mp4";
@@ -178,12 +178,21 @@ exports.mergeVideosWithAudio = function (req, res) {
           outputs: "outro",
         },
         {
+          filter: "trim",
+          options: {
+            start:0,
+            end:10
+          },
+          inputs: "2:v",
+          outputs: "trimed",
+        },
+        {
           filter: "concat",
           options: { n: 3, v: 1, a: 1 },
           inputs: [
             "intro",
             "0:a",
-            "2:v",
+            "trimed",
             "anullsrc=channel_layout=stereo:sample_rate=44100",
             "outro",
             "1:a",
@@ -197,11 +206,10 @@ exports.mergeVideosWithAudio = function (req, res) {
     .on("end", function () {
       const outputFilePath = path.join(__dirname, "../", outputVideo);
       const output = fs.createReadStream(outputFilePath);
-      res.set("Content-Type", "video/mp4");
       output.pipe(res);
-      output.on("end", () => {
-        onend(outputFilePath);
-      });
+      // output.on("end", () => {
+      //   onend(outputFilePath);
+      // });
     })
     .format("mp4")
     .output(outputVideo)

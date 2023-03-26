@@ -55,10 +55,9 @@ app.get("/", async function (req, res) {
     .pipe(res, { end: true });
 });
 
-app.get("/petronas", async (req, res) => {
-  console.log("Video Generation starts");
+app.get("/petronas", (req, res) => {
+  console.log("Video Generation starts:",);
   ffmpegControler.mergeVideosWithAudio(req, res);
-
 });
 
 app.get("/metadata", (req, res) => {
