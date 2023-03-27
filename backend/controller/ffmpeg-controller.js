@@ -205,11 +205,14 @@ exports.mergeVideosWithAudio = function (req, res) {
     .on("error", onerror)
     .on("end", function () {
       const outputFilePath = path.join(__dirname, "../", outputVideo);
+      const stat = fs.statSync(outputFilePath);
+      const fileSize = stat.size;
+      res.setHeader("Content-Length", fileSize);
       const output = fs.createReadStream(outputFilePath);
       output.pipe(res);
-      // output.on("end", () => {
-      //   onend(outputFilePath);
-      // });
+      output.on("end", () => {
+        onend(outputFilePath);
+      });
     })
     .format("mp4")
     .output(outputVideo)
