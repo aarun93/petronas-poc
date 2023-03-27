@@ -12,18 +12,14 @@ exports.mergeVideos = function (req, res) {
   };
 
   res.setHeader("Content-Type", "video/mp4");
-  res.setHeader("Transfer-Encoding", "chunked");
 
   const intro = "./assets/clips/videos/petronas-intro.mp4";
   const outro = "./assets/clips/videos/petronas-outro.mp4";
-  const dynamicVideo =
-    "./assets/clips/AI-footages/Music/Rocking-with-power.mp4";
+  const dynamicVideo = `./assets/clips/AI-footages/${param.moment.path}`;
+  const outputVideo = `./output/${short.generate()}-output.mp4`;
 
   const command = ffmpeg();
-
-  command.input(intro);
-  command.input(dynamicVideo);
-  command.input(outro);
+  command.input(intro).input(outro).input(dynamicVideo)
   command.complexFilter(
     [
       {
@@ -32,7 +28,7 @@ exports.mergeVideos = function (req, res) {
           fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
           text: param.moment.description,
           fontcolor: "white",
-          fontsize: "80",
+          fontsize: "60",
           alpha:
             "if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,2.5),1,if(lt(t,3),(0.5-(t-2.5))/0.5,0))))",
           x: "(w-text_w)/2",
@@ -47,7 +43,7 @@ exports.mergeVideos = function (req, res) {
           fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
           text: `By ${param.name}`,
           fontcolor: "white",
-          fontsize: "40",
+          fontsize: "32",
           alpha:
             "if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,2.5),1,if(lt(t,3),(0.5-(t-2.5))/0.5,0))))",
           x: "(w-text_w)/2",
@@ -60,31 +56,25 @@ exports.mergeVideos = function (req, res) {
         filter: "drawtext",
         options: {
           fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
-          text: " ",
-          fontcolor: "red",
-          fontsize: "80",
+          text: param.name,
+          fontcolor: "white",
+          fontsize: "60",
           alpha:
             "if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,1.5),1,if(lt(t,2),(0.5-(t-1.5))/0.5,0))))",
           x: "(w-text_w)/2",
           y: "(h-text_h)/2.1",
         },
         inputs: "1:v",
-        outputs: "dynamic",
+        outputs: "outro",
       },
       {
-        filter: "drawtext",
+        filter: "trim",
         options: {
-          fontfile: "./assets/fonts/TiltWarp-Regular.ttf",
-          text: param.name,
-          fontcolor: "white",
-          fontsize: "80",
-          alpha:
-            "if(lt(t,0),0,if(lt(t,0.5),(t-0)/0.5,if(lt(t,1.5),1,if(lt(t,2),(0.5-(t-1.5))/0.5,0))))",
-          x: "(w-text_w)/2",
-          y: "(h-text_h)/2.1",
+          start: 0,
+          end: 5,
         },
         inputs: "2:v",
-        outputs: "outro",
+        outputs: "trimed",
       },
       {
         filter: "concat",
@@ -93,21 +83,32 @@ exports.mergeVideos = function (req, res) {
           v: 1,
           a: 0,
         },
-        inputs: ["intro", "dynamic", "outro"],
-        outputs: "out",
+        inputs: ["intro", "trimed", "outro"],
+        outputs: ["vout"],
       },
     ],
-    "out"
+    ["vout"]
   );
 
   command
-    .videoCodec("libx264")
-    .audioCodec("copy")
+  
     .format("mp4")
-    .outputOptions(["-movflags frag_keyframe+empty_moov"])
+    .output(outputVideo)
     .on("error", onerror)
-    .on("end", onEnd)
-    .pipe(res, { end: true });
+    .on("end", function () {
+      const outputFilePath = path.join(__dirname, "../", outputVideo);
+      const stat = fs.statSync(outputFilePath);
+      const fileSize = stat.size;
+      res.setHeader("Content-Length", fileSize);
+      const output = fs.createReadStream(outputFilePath);
+      output.pipe(res);
+      output.on("end", () => {
+        onend(outputFilePath);
+      });
+    })
+
+    // .outputOptions(["-movflags frag_keyframe+empty_moov"])  //Uncomment for stream the video
+    .run();
 };
 
 exports.mergeVideosWithAudio = function (req, res) {
@@ -180,8 +181,8 @@ exports.mergeVideosWithAudio = function (req, res) {
         {
           filter: "trim",
           options: {
-            start:0,
-            end:10
+            start: 0,
+            end: 10,
           },
           inputs: "2:v",
           outputs: "trimed",
