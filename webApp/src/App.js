@@ -61,7 +61,7 @@ function App() {
     } else {
       // No errors! Put any logic here for the form submission!
       setVideoGetUrl(
-        `${getBaseUrl()}/petronas?interest=${form.interest}&moment=${form.powerMoment}&name=${form.name}`
+        `${getBaseUrl()}/petronas?interest=${form.interest}&moment=${form.powerMoment}&name=${form.name}#t=0.001`
       );
       setShowLoader(true);
       setShowForm(false);
@@ -181,7 +181,7 @@ function App() {
       {videoGeturl && (
         <div className="centerVideo">
             <video controls width="100%"
-              onLoadedData={() => {
+              onLoadedMetadata={() => {
                     console.log('video is loaded!')
                     setShowLoader(false);
                 }}>
