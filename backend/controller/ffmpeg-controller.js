@@ -16,7 +16,8 @@ exports.mergeVideos = function (req, res) {
   const intro = "./assets/clips/videos/petronas-intro.mp4";
   const outro = "./assets/clips/videos/petronas-outro.mp4";
   const dynamicVideo = `./assets/clips/AI-footages/${param.moment.path}`;
-  const outputVideo = `./output/${short.generate()}-output.mp4`;
+  const videoId = short.generate();
+  const outputVideo = `./output/${videoId}.mp4`;
 
   const command = ffmpeg();
   command.input(intro).input(outro).input(dynamicVideo)
@@ -71,7 +72,7 @@ exports.mergeVideos = function (req, res) {
         filter: "trim",
         options: {
           start: 0,
-          end: 5,
+          end: 10,
         },
         inputs: "2:v",
         outputs: "trimed",
@@ -91,20 +92,11 @@ exports.mergeVideos = function (req, res) {
   );
 
   command
-  
     .format("mp4")
     .output(outputVideo)
     .on("error", onerror)
     .on("end", function () {
-      const outputFilePath = path.join(__dirname, "../", outputVideo);
-      const stat = fs.statSync(outputFilePath);
-      const fileSize = stat.size;
-      res.setHeader("Content-Length", fileSize);
-      const output = fs.createReadStream(outputFilePath);
-      output.pipe(res);
-      output.on("end", () => {
-        onend(outputFilePath);
-      });
+      addAudio(outputVideo,videoId,res);
     })
 
     // .outputOptions(["-movflags frag_keyframe+empty_moov"])  //Uncomment for stream the video
@@ -230,7 +222,29 @@ function onend(fileUrl) {
     if (err) {
       console.log(`Error deleting file: ${err}`);
     } else {
-      console.log("File deleted successfully");
+      console.log("File deleted successfully.");
     }
   });
+}
+
+function addAudio(file,videoId,res){
+  const command = ffmpeg();
+  command
+  .input(file)
+  .input('./assets/clips/audio/Stylish-Rock-short.mp3')
+  .outputOptions('-c', 'copy', '-to', '25')
+  .on("end", function () {
+    const outputFilePath = path.join(__dirname, "../", `./output/${videoId}-withAudio.mp4`);
+    const stat = fs.statSync(outputFilePath);
+    const fileSize = stat.size;
+    res.setHeader("Content-Length", fileSize);
+    const output = fs.createReadStream(outputFilePath);
+    output.pipe(res);
+    output.on("end", () => {
+      onend(path.join(__dirname, "../", file))
+      onend(outputFilePath);
+    });
+  })
+  .output(`./output/${videoId}-withAudio.mp4`)
+  .run();
 }
