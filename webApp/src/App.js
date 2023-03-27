@@ -105,9 +105,9 @@ function App() {
               className="text-center"
               type="text"
               placeholder="Name"
-                onChange={e => setField('name', e.target.value)}
-                isInvalid={ !!errors.name }
-
+              onChange={e => setField('name', e.target.value)}
+              isInvalid={ !!errors.name }
+              maxLength={50}
             />
             <Form.Control.Feedback type="invalid">
             { errors.name }
