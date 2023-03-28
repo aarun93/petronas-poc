@@ -231,7 +231,7 @@ function addAudio(file,videoId,res){
   const command = ffmpeg();
   command
   .input(file)
-  .input('./assets/clips/audio/Stylish-Rock-short.mp3')
+  .input('./assets/clips/audio/Stylish-Rock-short.aac')
   .outputOptions('-c', 'copy', '-to', '25')
   .on("end", function () {
     const outputFilePath = path.join(__dirname, "../", `./output/${videoId}-withAudio.mp4`);
