@@ -232,7 +232,8 @@ function addAudio(file,videoId,res){
   command
   .input(file)
   .input('./assets/clips/audio/Stylish-Rock-short.aac')
-  .outputOptions('-c', 'copy', '-to', '25')
+  .audioFilter('afade=t=out:st=18:d=5')
+  .outputOptions('-to', '23')
   .on("end", function () {
     const outputFilePath = path.join(__dirname, "../", `./output/${videoId}-withAudio.mp4`);
     const stat = fs.statSync(outputFilePath);
